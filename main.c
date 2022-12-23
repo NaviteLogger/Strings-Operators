@@ -1,118 +1,58 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-
-// int main()
-// {
-//     int limit = 20;
-
-//     char dane[3][20];
-//     char str[][20] = {"Stopien: ", "Imie: ", "Nazwisko: "};
-
-//     for (int i = 0; i < 3; i++)
-//     {
-//         printf("%s", str[i]);
-//         fgets(dane[i], limit, stdin);
-//         dane[i][strlen(dane[i]) - 1] = '\0';
-//     }
-
-//     printf("%s%s, %s%s, %s%s\n", str[0], dane[0], str[1], dane[1], str[2], dane[2]);
-
-//     return 0;
-// }
-
-// int main()
-// {
-//     printf("Podaj wymiar tablicy mnozenia: ");
-//     int wymiarTablicy;
-//     int tablicaMnozenia[wymiarTablicy][wymiarTablicy];
-//     scanf("%i", &wymiarTablicy);
-
-//     ]for (int i = 0; i < wymiarTablicy; i++)
-//     {
-//         for (int j = 0; j < wymiarTablicy; j++)
-//         {
-//             tablicaMnozenia[i][j] = (i + 1) * (j + 1);
-//         }
-//     }
-
-//     for (int i = 0; i < wymiarTablicy; i++)
-//     {
-//         for (int j = 0; j < wymiarTablicy; j++)
-//         {
-//             if (tablicaMnozenia[i][j] < 10)
-//             {
-//                 printf("%i ", tablicaMnozenia[i][j]);
-//             }
-//             else
-//             {
-//                 printf("%i", tablicaMnozenia[i][j]);
-//             }
-//             printf(" ");
-//         }
-//         printf("\n");
-//     }
-
-//     return 0;
-// }
 
 int main()
 {
-    char czyKontynuowacDzialanie = 'y';
+    char czyKontynuowacDzialanie = 'y'; //zmienna uzyta do kontynuacji programu
 
     do
     {
-        char jednosci[10][20] = {"", " jeden", " dwa", " trzy", " cztery", " piec", " szesc", " siedem", " osiem",
-                                 " dziewiec"};
-        char nascie[10][20] = {"dziesiec", " jedenascie", " dwanascie", " trzynascie", " czternascie", " pietnascie",
-                               " szesnascie", " siedemnascie", " osiemnascie", " dziewietnascie"};
-        char dziesiatki[10][20] = {"", " dziesiec", " dwadziescia", " trzydziesci", " czterdziesci", " piecdziesiat",
-                                   " szescdziesiat", " siedemdziesiat", " osiemdziesiat", " dziewiecdziesiat"};
-        char setki[10][20] = {"", " sto", " dwiescie", " trzysta", " czterysta", " piecset", " szescset", " siedemset",
-                              " osiemset", " dziewiecset"};
+        //tablice zawierajace elementy do wypisania przez program
+        char jednosci[10][20] = {"", " jeden", " dwa", " trzy", " cztery", " piec", " szesc", " siedem", " osiem"," dziewiec"};
+        char teProblematyczneLiczby[10][20] = {"dziesiec", " jedenascie", " dwanascie", " trzynascie", " czternascie", " pietnascie"," szesnascie", " siedemnascie", " osiemnascie", " dziewietnascie"};
+        char dziesiatki[10][20] = {"", " dziesiec", " dwadziescia", " trzydziesci", " czterdziesci", " piecdziesiat"," szescdziesiat", " siedemdziesiat", " osiemdziesiat", " dziewiecdziesiat"};
+        char setki[10][20] = {"", " sto", " dwiescie", " trzysta", " czterysta", " piecset", " szescset", " siedemset"," osiemset", " dziewiecset"};
 
-        char inputUzytkownikaDoSformatowania[3];
-        //
+        char inputUzytkownikaDoSformatowania[3]; //surowe wejscie uzytkownika
 
-        int inputUzytkownika;
+        int inputUzytkownika; //wejscie uzytkownika do edycji
         do
         {
-            printf("Podaj liczbe z zakresu 0-999 do wypisania przez program:");
+            printf("Podaj trzycyfrowa liczbe z zakresu 0-999 do wypisania przez program (program zczyta tylko trzy pierszwe elementy):");
             //scanf("%[0-9]", inputUzytkownikaDoSformatowania);
-            fgets(inputUzytkownikaDoSformatowania, 4, stdin);
-            inputUzytkownika = atoi(&inputUzytkownikaDoSformatowania);
-            fflush(stdin);
-        } while(strspn(inputUzytkownikaDoSformatowania, "0123456789") == 0);
+            fgets(inputUzytkownikaDoSformatowania, 4, stdin); //pobranie pierwszych trzech elementow z surowego wejscia uzytkownika
+            inputUzytkownika = atoi(&inputUzytkownikaDoSformatowania); //konwersja surowego wejscia uzytkownika: string -> int
+            fflush(stdin); //oproznienie buffera do pozniejszego uzycia
+        } while(strspn(inputUzytkownikaDoSformatowania, "0123456789") == 0); //uzytkownik bedzie proszony o podanie poprawnego wejscia do skutku (przy czym program moze przyjac
+                                                                                        //np. za dluga liczbe -> zostanie ona przycieta). Program przyjmuje do trzech liczby lub mniej w przypadku
+                                                                                        //gdy np. po dwoch pojawi sie nieprawidlowej wejscie (litera, znak, itp)
+        int tempLiczbaSetek = inputUzytkownika / 100; //wyliczanie cyfry setek
+        int tempLiczbaDziesiatek = (inputUzytkownika - (tempLiczbaSetek * 100)) / 10; //wyliczanie cyfry dziesiatek
+        int tempLiczbaJednosci = inputUzytkownika - tempLiczbaSetek * 100 - tempLiczbaDziesiatek * 10; //wyliczanie cyfry jednosci
 
-        int tempLiczbaSetek = inputUzytkownika / 100;
-        int tempLiczbaDziesiatek = (inputUzytkownika - (tempLiczbaSetek * 100)) / 10;
-        int tempLiczbaJednosci = inputUzytkownika - tempLiczbaSetek * 100 - tempLiczbaDziesiatek * 10;
-
-        if (tempLiczbaJednosci == 0)
+        if (tempLiczbaJednosci == 0 && tempLiczbaDziesiatek == 0 && tempLiczbaSetek == 0) //dla zera uzytkownik dostanie opowiedz "0"
         {
             printf("Liczba zapisana slownie dla podanego przez Ciebie wejscia to: \n");
-            printf("zero");
+            printf(" zero");
         }
-        else if (tempLiczbaDziesiatek != 1)
+        else if (tempLiczbaDziesiatek != 1) //dla cyfry dziesiatek "1" program skorzysta ze specjalnej tablicy
         {
             printf("Liczba zapisana slownie dla podanego przez Ciebie wejscia to: \n");
             printf("%s %s %s", setki[tempLiczbaSetek], dziesiatki[tempLiczbaDziesiatek], jednosci[tempLiczbaJednosci]);
         }
-        else
+        else //pozostale, prawidlowe wejscia
         {
             printf("Liczba zapisana slownie dla podanego przez Ciebie wejscia to: \n");
-            printf("%s %s", setki[tempLiczbaSetek], nascie[tempLiczbaJednosci]);
+            printf("%s %s", setki[tempLiczbaSetek], teProblematyczneLiczby[tempLiczbaJednosci]);
         }
 
-        fflush(stdin);
-        printf("\nCzy chcesz kontynuowac program?:");
-        czyKontynuowacDzialanie = getchar();
+        fflush(stdin); //wyczyszczenie buffera do kolejnego uzycia
+        printf("\nCzy chcesz kontynuowac program? [y/n]:");
+        czyKontynuowacDzialanie = getchar(); //program przyjmie jedna litere od uzytkownika i zgodnie z warunkiem sprawdzi czy kontynuowac dzialanie aplikacji
         fflush(stdin);
 
     } while (czyKontynuowacDzialanie == 'y' || czyKontynuowacDzialanie == 'Y');
 
     return 0;
 }
-
-
